@@ -1,4 +1,4 @@
-package com.daxthompsonproject1.api.models;
+package com.daxthompsonproject1.viewmodels.models;
 
 import com.google.firebase.auth.FirebaseUser;
 

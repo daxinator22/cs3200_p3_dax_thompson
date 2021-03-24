@@ -1,10 +1,10 @@
-package com.daxthompsonproject1.api.viewmodels;
+package com.daxthompsonproject1.viewmodels.viewmodels;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.daxthompsonproject1.api.models.User;
+import com.daxthompsonproject1.viewmodels.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

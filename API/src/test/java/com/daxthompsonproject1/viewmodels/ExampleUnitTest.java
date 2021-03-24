@@ -1,4 +1,4 @@
-package com.daxthompsonproject1.api;
+package com.daxthompsonproject1.viewmodels;
 
 import org.junit.Test;
 

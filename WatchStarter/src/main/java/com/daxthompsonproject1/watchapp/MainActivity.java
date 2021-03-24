@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.daxthompsonproject1.api.Verify;
+import com.daxthompsonproject1.viewmodels.Verify;
 
 public class MainActivity extends AppCompatActivity {
 
