@@ -9,4 +9,8 @@ public class User {
         this.uid = user.getUid();
         this.email = user.getEmail();
     }
+
+    public String getEmail() {
+        return email;
+    }
 }

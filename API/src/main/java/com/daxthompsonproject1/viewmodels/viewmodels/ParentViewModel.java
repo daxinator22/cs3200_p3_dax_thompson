@@ -1,5 +1,7 @@
 package com.daxthompsonproject1.viewmodels.viewmodels;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -9,24 +11,29 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class UserViewModel extends ViewModel {
+public class ParentViewModel extends ViewModel {
     FirebaseAuth auth;
     MutableLiveData<User> user = new MutableLiveData<>();
     //    MutableLiveData<RuntimeException> loginError = new MutableLiveData<>();
-    public UserViewModel() {
+    public ParentViewModel() {
         this.auth = FirebaseAuth.getInstance();
-        this.auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser fbUser = auth.getCurrentUser();
+        this.auth.addAuthStateListener((listener) -> {
+            FirebaseUser fbUser = auth.getCurrentUser();
 //                loginError.setValue(null);
-                if (fbUser == null) {
-                    user.setValue(null);
-                } else {
-                    user.setValue(new User(fbUser));
-                }
+            if (fbUser == null) {
+                user.setValue(null);
+            } else {
+                user.setValue(new User(fbUser));
             }
+
         });
+    }
+
+    public String getUserIdentity(){
+        if(user.getValue() == null){
+            return "There is no current user";
+        }
+        return user.getValue().getEmail();
     }
 
     public MutableLiveData<User> getUser() {
