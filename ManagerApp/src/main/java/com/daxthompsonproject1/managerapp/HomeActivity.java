@@ -10,23 +10,32 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.daxthompsonproject1.viewmodels.viewmodels.ManagerViewModel;
 import com.daxthompsonproject1.viewmodels.viewmodels.ParentViewModel;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private ParentViewModel viewModel;
+    private ManagerViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        this.viewModel = new ViewModelProvider(this).get(ParentViewModel.class);
+        this.viewModel = new ViewModelProvider(this).get(ManagerViewModel.class);
 
         AppCompatTextView currentUser = findViewById(R.id.currentUser);
-        currentUser.setText(viewModel.getUserIdentity());
 
-
+        viewModel.getUser().observe(this, (user) -> {
+            Log.d("VIEWMODEL", String.format("Current user - %s", viewModel.getUserIdentity()));
+            if(user == null){
+                Intent intent = new Intent(this, SignInActivity.class);
+                startActivity(intent);
+            }
+            else{
+                currentUser.setText(viewModel.getUserIdentity());
+            }
+        });
 
         AppCompatButton logOut = findViewById(R.id.logOut);
         logOut.setOnClickListener((view) -> {
@@ -40,12 +49,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-        viewModel.getUser().observe(this, (user) -> {
-            Log.d("VIEWMODEL", String.format("Current user - %s", viewModel.getUserIdentity()));
-            if(user == null){
-                Intent intent = new Intent(this, SignInActivity.class);
-                startActivity(intent);
-            }
-        });
+
     }
 }

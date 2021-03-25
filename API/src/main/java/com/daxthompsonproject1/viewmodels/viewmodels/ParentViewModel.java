@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class ParentViewModel extends ViewModel {
+public abstract class ParentViewModel extends ViewModel {
     FirebaseAuth auth;
     MutableLiveData<User> user = new MutableLiveData<>();
     //    MutableLiveData<RuntimeException> loginError = new MutableLiveData<>();
