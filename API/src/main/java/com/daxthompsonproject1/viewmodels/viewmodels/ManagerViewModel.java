@@ -1,12 +1,14 @@
 package com.daxthompsonproject1.viewmodels.viewmodels;
 
 import android.net.MacAddress;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.daxthompsonproject1.viewmodels.models.Manager;
+import com.daxthompsonproject1.viewmodels.models.Reservation;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,6 +47,18 @@ public class ManagerViewModel extends ParentViewModel{
 
             }
         });
+    }
+
+    @Override
+    public void updateWaitList(DataSnapshot snapshot) {
+        this.waitlist.getValue().clear();
+
+        for(DataSnapshot ss : snapshot.getChildren()){
+            if(ss.child("/managerUid").getValue().equals(managerData.getValue().uid)){
+                this.waitlist.getValue().addReservation(ss.getValue(Reservation.class));
+            }
+        }
+        Log.d("VIEWMODEL", waitlist.getValue().toString());
     }
 
     public MutableLiveData<Manager> getManagerData(){return this.managerData;}
