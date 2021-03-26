@@ -2,16 +2,16 @@ package com.daxthompsonproject1.managerapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.LinearLayout;
 
+import com.daxthompsonproject1.viewmodels.models.Reservation;
 import com.daxthompsonproject1.viewmodels.viewmodels.ManagerViewModel;
-import com.daxthompsonproject1.viewmodels.viewmodels.ParentViewModel;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -27,7 +27,6 @@ public class HomeActivity extends AppCompatActivity {
         AppCompatTextView currentUser = findViewById(R.id.currentUser);
 
         viewModel.getUser().observe(this, (user) -> {
-            Log.d("VIEWMODEL", String.format("Current user - %s", viewModel.getUserIdentity()));
             if(user == null){
                 currentUser.setText("Loading...");
                 Intent intent = new Intent(this, SignInActivity.class);
@@ -40,13 +39,11 @@ public class HomeActivity extends AppCompatActivity {
 
         AppCompatButton logOut = findViewById(R.id.logOut);
         logOut.setOnClickListener((view) -> {
-            Log.d("MANAGER-APP", "User logged out");
             viewModel.signOut();
         });
 
         AppCompatTextView managerData = findViewById(R.id.managerData);
         this.viewModel.getManagerData().observe(this, (data) -> {
-            Log.d("VIEWMODEL", String.format("Manager changed"));
             if(this.viewModel.getManagerData().getValue() == null){
                 managerData.setText("Loading...");
             }
@@ -55,12 +52,25 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.makeReservation).setOnClickListener(view -> {
+            this.viewModel.makeReservation();
+        });
+
+        LinearLayout reservationContainer = findViewById(R.id.reservationContiner);
+        this.viewModel.getWaitList().observe(this, (view) -> {
+            reservationContainer.removeAllViews();
+
+            Log.d("HOMEACTIVITY-UPDATEWAITLIST", "Waitlist was changed");
+            StringBuilder reservations = new StringBuilder();
+            for(Reservation reservation : this.viewModel.getWaitList().getValue()){
+                reservationContainer.addView(this.viewModel.renderReservation(reservation, this));
+            }
+        });
+
     }
 
     @Override
     protected void onStart(){
         super.onStart();
-
-
     }
 }

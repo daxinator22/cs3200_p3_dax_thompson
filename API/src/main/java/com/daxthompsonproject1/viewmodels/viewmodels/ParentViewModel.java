@@ -23,6 +23,7 @@ public abstract class ParentViewModel extends ViewModel {
     protected FirebaseAuth auth;
     protected DatabaseReference database;
     protected MutableLiveData<User> user = new MutableLiveData<>();
+    protected DatabaseReference reservations;
     protected  MutableLiveData<WaitList> waitlist = new MutableLiveData<>();
     //    MutableLiveData<RuntimeException> loginError = new MutableLiveData<>();
     public ParentViewModel() {
@@ -38,10 +39,11 @@ public abstract class ParentViewModel extends ViewModel {
 
         });
 
-       ;
+        this.waitlist.setValue(new WaitList());
         this.database = FirebaseDatabase.getInstance().getReference("/userData");
 
-        this.database.child("/reservations").addValueEventListener(new ValueEventListener() {
+        this.reservations = this.database.child("/reservations");
+        this.reservations.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 updateWaitList(snapshot);
@@ -51,7 +53,8 @@ public abstract class ParentViewModel extends ViewModel {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        })
+        });
+
     }
 
     public String getUserIdentity(){
@@ -76,6 +79,10 @@ public abstract class ParentViewModel extends ViewModel {
 //                }
 //            }
 //        });
+    }
+
+    public MutableLiveData<WaitList> getWaitList(){
+        return this.waitlist;
     }
 
     public void signIn(String email, String password) {

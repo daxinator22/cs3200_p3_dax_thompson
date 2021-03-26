@@ -1,4 +1,4 @@
-include ':WatchStarter'
+include ':ClientApp'
 include ':API'
 include ':ManagerApp'
 rootProject.name = "cs3200_p3_dax_thompson"

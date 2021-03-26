@@ -1,4 +1,4 @@
-package com.daxthompsonproject1.watchapp;
+package com.daxthompsonproject1.clientapp;
 
 import android.content.Context;
 

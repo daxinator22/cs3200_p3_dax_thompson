@@ -1,20 +1,22 @@
 package com.daxthompsonproject1.viewmodels.viewmodels;
 
-import android.net.MacAddress;
-import android.provider.ContactsContract;
-import android.util.Log;
+import android.app.Activity;
+
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.daxthompsonproject1.viewmodels.models.Manager;
 import com.daxthompsonproject1.viewmodels.models.Reservation;
+import com.daxthompsonproject1.viewmodels.models.WaitList;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.function.LongFunction;
+import java.util.Collections;
+
 
 public class ManagerViewModel extends ParentViewModel{
 
@@ -26,15 +28,14 @@ public class ManagerViewModel extends ParentViewModel{
 
         this.managerDatabase = database.child("/managers");
         this.managerData = new MutableLiveData<>();
+        this.waitlist.setValue(new WaitList());
 
         this.managerDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for(DataSnapshot ss : snapshot.getChildren()){
-                    Log.d("VIEWMODEL", ss.toString());
                     if(user.getValue() != null && ss.getKey().equals(user.getValue().getUid())){
-                        Log.d("VIEWMODEL", String.format("Manager changed"));
                         Manager manager = ss.getValue(Manager.class);
                         manager.setUid(user.getValue().getUid());
                         managerData.setValue(manager);
@@ -47,18 +48,38 @@ public class ManagerViewModel extends ParentViewModel{
 
             }
         });
+
     }
+
+    public void makeReservation(){
+        long curTime = System.currentTimeMillis();
+        this.reservations.push().setValue(new Reservation(managerData.getValue().uid, "test", curTime));
+    }
+
+    public LinearLayout renderReservation(Reservation reservation, Activity activity){
+        LinearLayout container = reservation.render(activity);
+        container.setOnClickListener(view -> {
+            this.reservations.child(reservation.getId()).removeValue();
+        });
+
+        return container;
+    }
+
 
     @Override
     public void updateWaitList(DataSnapshot snapshot) {
         this.waitlist.getValue().clear();
-
         for(DataSnapshot ss : snapshot.getChildren()){
             if(ss.child("/managerUid").getValue().equals(managerData.getValue().uid)){
-                this.waitlist.getValue().addReservation(ss.getValue(Reservation.class));
+                Reservation res = ss.getValue(Reservation.class);
+                res.setId(ss.getKey());
+                this.waitlist.getValue().addReservation(res);
             }
         }
-        Log.d("VIEWMODEL", waitlist.getValue().toString());
+
+        //In case the order gets messed up
+        Collections.sort(waitlist.getValue());
+        waitlist.setValue(waitlist.getValue());
     }
 
     public MutableLiveData<Manager> getManagerData(){return this.managerData;}
