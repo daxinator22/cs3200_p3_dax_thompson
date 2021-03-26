@@ -13,7 +13,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/API" />
+            <option value="$PROJECT_DIR$/API/clientapp" />
             <option value="$PROJECT_DIR$/ClientApp" />
+            <option value="$PROJECT_DIR$/Delete" />
             <option value="$PROJECT_DIR$/ManagerApp" />
           </set>
         </option>

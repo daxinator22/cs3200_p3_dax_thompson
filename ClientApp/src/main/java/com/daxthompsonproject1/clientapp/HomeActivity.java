@@ -1,17 +1,14 @@
 package com.daxthompsonproject1.clientapp;
 
-import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.daxthompsonproject1.viewmodels.Verify;
+import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Verify.verifyWatchApp();
+        setContentView(R.layout.activity_home);
     }
 }
