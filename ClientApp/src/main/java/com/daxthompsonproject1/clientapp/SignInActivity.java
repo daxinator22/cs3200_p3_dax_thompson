@@ -23,21 +23,21 @@ public class SignInActivity extends AppCompatActivity {
 
         this.viewModel = new ViewModelProvider(this).get(ClientViewModel.class);
 
-//        AppCompatEditText email = findViewById(R.id.email);
-//        AppCompatEditText password = findViewById(R.id.password);
-//
-//        AppCompatButton signUp = findViewById(R.id.signUp);
-//        signUp.setOnClickListener((view) -> {
-//            Intent intent = new Intent(this, SignUpActivity.class);
-//            startActivity(intent);
-//            finish();
-//        });
-//
-//        AppCompatButton signIn = findViewById(R.id.signIn);
-//        signIn.setOnClickListener((view) -> {
-//            Log.d("MANAGER-APP", "User signed in");
-//            viewModel.signIn(email.getText().toString(), password.getText().toString());
-//            finish();
-//        });
+        AppCompatEditText email = findViewById(R.id.email);
+        AppCompatEditText password = findViewById(R.id.password);
+
+        AppCompatButton signUp = findViewById(R.id.signUp);
+        signUp.setOnClickListener((view) -> {
+            Intent intent = new Intent(this, SignUpActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
+        AppCompatButton signIn = findViewById(R.id.signIn);
+        signIn.setOnClickListener((view) -> {
+            Log.d("MANAGER-APP", "User signed in");
+            viewModel.signIn(email.getText().toString(), password.getText().toString());
+            finish();
+        });
     }
 }

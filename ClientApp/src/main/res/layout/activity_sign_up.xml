@@ -30,12 +30,6 @@
             android:layout_height="wrap_content"
             android:hint="Display Name"/>
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/company"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Company"/>
-
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signUp"
             android:layout_width="match_parent"

@@ -32,12 +32,6 @@
             android:text="No user data"
             android:gravity="center_horizontal"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/makeReservation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Make Reservation"/>
-
         <LinearLayout
             android:id="@+id/reservationContiner"
             android:layout_width="match_parent"

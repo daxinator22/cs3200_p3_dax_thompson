@@ -26,11 +26,16 @@
             android:text="Log Out"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/managerData"
+            android:id="@+id/clientData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="No user data"
             android:gravity="center_horizontal"/>
+
+        <ScrollView
+            android:id="@+id/managerContainer"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/makeReservation"

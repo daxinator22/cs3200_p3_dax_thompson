@@ -20,13 +20,11 @@ import java.util.Collections;
 
 public class ManagerViewModel extends ParentViewModel{
 
-    private DatabaseReference managerDatabase;
     private MutableLiveData<Manager> managerData;
 
     public ManagerViewModel(){
         super();
 
-        this.managerDatabase = database.child("/managers");
         this.managerData = new MutableLiveData<>();
         this.waitlist.setValue(new WaitList());
 
@@ -51,30 +49,17 @@ public class ManagerViewModel extends ParentViewModel{
 
     }
 
-    public void makeReservation(){
-        long curTime = System.currentTimeMillis();
-        this.reservations.push().setValue(new Reservation(managerData.getValue().uid, "test", curTime));
-    }
-
-    public LinearLayout renderReservation(Reservation reservation, Activity activity){
-        LinearLayout container = reservation.render(activity);
-        container.setOnClickListener(view -> {
-            this.reservations.child(reservation.getId()).removeValue();
-        });
-
-        return container;
-    }
-
-
     @Override
     public void updateWaitList(DataSnapshot snapshot) {
         this.waitlist.getValue().clear();
         for(DataSnapshot ss : snapshot.getChildren()){
+
             if(ss.child("/managerUid").getValue().equals(managerData.getValue().uid)){
                 Reservation res = ss.getValue(Reservation.class);
                 res.setId(ss.getKey());
                 this.waitlist.getValue().addReservation(res);
             }
+
         }
 
         //In case the order gets messed up

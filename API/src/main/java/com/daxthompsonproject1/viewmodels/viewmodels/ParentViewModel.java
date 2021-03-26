@@ -1,11 +1,15 @@
 package com.daxthompsonproject1.viewmodels.viewmodels;
 
+import android.app.Activity;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.daxthompsonproject1.viewmodels.models.Manager;
+import com.daxthompsonproject1.viewmodels.models.Reservation;
 import com.daxthompsonproject1.viewmodels.models.User;
 import com.daxthompsonproject1.viewmodels.models.WaitList;
 import com.google.android.gms.tasks.Task;
@@ -25,6 +29,8 @@ public abstract class ParentViewModel extends ViewModel {
     protected MutableLiveData<User> user = new MutableLiveData<>();
     protected DatabaseReference reservations;
     protected  MutableLiveData<WaitList> waitlist = new MutableLiveData<>();
+    protected DatabaseReference managerDatabase;
+
     //    MutableLiveData<RuntimeException> loginError = new MutableLiveData<>();
     public ParentViewModel() {
         this.auth = FirebaseAuth.getInstance();
@@ -46,7 +52,8 @@ public abstract class ParentViewModel extends ViewModel {
         this.reservations.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                updateWaitList(snapshot);
+                if(user.getValue() != null)
+                    updateWaitList(snapshot);
             }
 
             @Override
@@ -54,6 +61,8 @@ public abstract class ParentViewModel extends ViewModel {
 
             }
         });
+
+        this.managerDatabase = database.child("/managers");
 
     }
 
@@ -85,12 +94,21 @@ public abstract class ParentViewModel extends ViewModel {
         return this.waitlist;
     }
 
-    public void signIn(String email, String password) {
+    public Task<AuthResult> signIn(String email, String password) {
         auth.signInWithEmailAndPassword(email, password);
     }
 
     public void signOut() {
         auth.signOut();
+    }
+
+    public LinearLayout renderReservation(Reservation reservation, Activity activity){
+        LinearLayout container = reservation.render(activity);
+        container.setOnClickListener(view -> {
+            this.reservations.child(reservation.getId()).removeValue();
+        });
+
+        return container;
     }
 
     public abstract void updateWaitList(DataSnapshot snapshot);

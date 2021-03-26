@@ -52,10 +52,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.makeReservation).setOnClickListener(view -> {
-            this.viewModel.makeReservation();
-        });
-
         LinearLayout reservationContainer = findViewById(R.id.reservationContiner);
         this.viewModel.getWaitList().observe(this, (view) -> {
             reservationContainer.removeAllViews();
