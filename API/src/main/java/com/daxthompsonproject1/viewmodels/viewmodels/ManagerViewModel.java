@@ -12,6 +12,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.function.LongFunction;
+
 public class ManagerViewModel extends ParentViewModel{
 
     private DatabaseReference managerDatabase;
@@ -28,9 +30,12 @@ public class ManagerViewModel extends ParentViewModel{
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for(DataSnapshot ss : snapshot.getChildren()){
-                    if(user.getValue() != null && ss.getValue().equals(user.getValue().getUid())){
+                    Log.d("VIEWMODEL", ss.toString());
+                    if(user.getValue() != null && ss.getKey().equals(user.getValue().getUid())){
                         Log.d("VIEWMODEL", String.format("Manager changed"));
-                        managerData.setValue(ss.getValue(Manager.class));
+                        Manager manager = ss.getValue(Manager.class);
+                        manager.setUid(user.getValue().getUid());
+                        managerData.setValue(manager);
                     }
                 }
             }
@@ -44,28 +49,15 @@ public class ManagerViewModel extends ParentViewModel{
 
     public MutableLiveData<Manager> getManagerData(){return this.managerData;}
 
-    public void updateManager(String uid){
-        if(managerData.getValue() == null){
-            Log.d("VIEWMODEL", "User is null");
-        }
-        database.child(uid).setValue(managerData);
-    }
-
-    @Override
-    public void signUp(String email, String password) {
-        super.signUp(email, password);
-
-//        String uid = this.getUser().getValue().getUid();
-        String displayName = "test";
-        String company = "test";
-        Manager manager = new Manager(displayName, company, email);
-        managerData.setValue(manager);
-    }
-
-    @Override
-    public void updateData() {
-        managerDatabase.child(user.getValue().getUid()).get().addOnCompleteListener(task -> {
-            managerData.setValue(task.getResult().getValue(Manager.class));
+    public void signUp(String email, String password, String displayName, String company) {
+        super.signUp(email, password).addOnCompleteListener((result) -> {
+            String uid = user.getValue().getUid();
+            Manager manager = new Manager(displayName, company, email);
+            manager.setUid(uid);
+            managerData.setValue(manager);
+            managerDatabase.child(uid).setValue(manager);
         });
+
     }
+
 }

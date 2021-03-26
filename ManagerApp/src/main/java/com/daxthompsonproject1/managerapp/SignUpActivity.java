@@ -23,11 +23,13 @@ public class SignUpActivity extends AppCompatActivity {
 
         AppCompatEditText email = findViewById(R.id.email);
         AppCompatEditText password = findViewById(R.id.password);
+        AppCompatEditText displayName = findViewById(R.id.displayName);
+        AppCompatEditText company = findViewById(R.id.company);
 
         AppCompatButton signUp = findViewById(R.id.signUp);
         signUp.setOnClickListener((view) -> {
             Log.d("MANAGER-APP", "User created");
-            viewModel.signUp(email.getText().toString(), password.getText().toString());
+            viewModel.signUp(email.getText().toString(), password.getText().toString(), displayName.getText().toString(), company.getText().toString());
             finish();
         });
 

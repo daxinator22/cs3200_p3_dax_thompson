@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -26,8 +27,8 @@ public class SignInActivity extends AppCompatActivity {
 
         AppCompatButton signUp = findViewById(R.id.signUp);
         signUp.setOnClickListener((view) -> {
-            Log.d("MANAGER-APP", "User created");
-            viewModel.signUp(email.getText().toString(), password.getText().toString());
+            Intent intent = new Intent(this, SignUpActivity.class);
+            startActivity(intent);
             finish();
         });
 
