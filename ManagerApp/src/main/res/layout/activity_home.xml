@@ -24,6 +24,13 @@
             android:layout_height="wrap_content"
             android:text="Log Out"/>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/managerData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No user data"
+            android:gravity="center_horizontal"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

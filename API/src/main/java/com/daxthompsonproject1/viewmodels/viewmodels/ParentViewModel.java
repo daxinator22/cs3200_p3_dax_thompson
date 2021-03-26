@@ -9,11 +9,14 @@ import androidx.lifecycle.ViewModel;
 import com.daxthompsonproject1.viewmodels.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public abstract class ParentViewModel extends ViewModel {
-    FirebaseAuth auth;
-    MutableLiveData<User> user = new MutableLiveData<>();
+    protected FirebaseAuth auth;
+    protected DatabaseReference database;
+    protected MutableLiveData<User> user = new MutableLiveData<>();
     //    MutableLiveData<RuntimeException> loginError = new MutableLiveData<>();
     public ParentViewModel() {
         this.auth = FirebaseAuth.getInstance();
@@ -24,9 +27,14 @@ public abstract class ParentViewModel extends ViewModel {
                 user.setValue(null);
             } else {
                 user.setValue(new User(fbUser));
+
             }
+            updateData();
 
         });
+
+       ;
+        this.database = FirebaseDatabase.getInstance().getReference("/userData");
     }
 
     public String getUserIdentity(){
@@ -60,5 +68,7 @@ public abstract class ParentViewModel extends ViewModel {
     public void signOut() {
         auth.signOut();
     }
+
+    public abstract void updateData();
 }
 

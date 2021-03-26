@@ -29,6 +29,7 @@ public class HomeActivity extends AppCompatActivity {
         viewModel.getUser().observe(this, (user) -> {
             Log.d("VIEWMODEL", String.format("Current user - %s", viewModel.getUserIdentity()));
             if(user == null){
+                currentUser.setText("Loading...");
                 Intent intent = new Intent(this, SignInActivity.class);
                 startActivity(intent);
             }
@@ -41,6 +42,17 @@ public class HomeActivity extends AppCompatActivity {
         logOut.setOnClickListener((view) -> {
             Log.d("MANAGER-APP", "User logged out");
             viewModel.signOut();
+        });
+
+        AppCompatTextView managerData = findViewById(R.id.managerData);
+        this.viewModel.getManagerData().observe(this, (data) -> {
+            Log.d("VIEWMODEL", String.format("Manager changed"));
+            if(this.viewModel.getManagerData().getValue() == null){
+                managerData.setText("Loading...");
+            }
+            else {
+                managerData.setText(this.viewModel.getManagerData().getValue().toString());
+            }
         });
 
     }
